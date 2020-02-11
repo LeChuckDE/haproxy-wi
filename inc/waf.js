@@ -1,3 +1,5 @@
+var awesome = "/inc/fontawesome.min.js"
+
 $( function() {
 	$( "#ajaxwafstatus input" ).change(function() {
 		var id = $(this).attr('id');
@@ -7,7 +9,6 @@ $( function() {
 function showOverviewWaf(serv, hostnamea) {
 	$.getScript('/inc/chart.min.js');
 	showWafMetrics();
-	console.log(serv)
 	var i;
 	for (i = 0; i < serv.length; i++) { 
 		showOverviewWafCallBack(serv[i], hostnamea[i])
@@ -32,6 +33,8 @@ function showOverviewWafCallBack(serv, hostnamea) {
 			$("#"+hostnamea).html(data)		
 			$( "input[type=submit], button" ).button();
 			$( "input[type=checkbox]" ).checkboxradio();
+			$.getScript('/inc/overview.js');
+			$.getScript(awesome);
 		}				
 	} );
 }
@@ -49,7 +52,7 @@ function metrics_waf(name) {
 		},
 		type: "POST",
 		success: function( data ) {
-			showOverviewWaf();
+			showOverviewWaf(ip, hostnamea);
 			setTimeout(function() {
 				$( "#"+name ).parent().parent().removeClass( "update" );
 			}, 2500 );
@@ -82,7 +85,7 @@ function installWaf(ip) {
 				$('.alert-danger').remove();
 				$('.alert-warning').remove();
 				$("#ajax").html('<div class="alert alert-success">'+data+'</data>');
-				showOverviewWaf()
+				showOverviewWaf(ip, hostnamea)
 			}	
 		}
 	} );	
